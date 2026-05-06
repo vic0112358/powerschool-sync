@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>School Events Public Summary</title>
+  <style>
+    :root {
+      --ink: #1f2b37;
+      --muted: #627081;
+      --panel: #fffdf8;
+      --line: #ddd2c4;
+      --school: #f8f3ea;
+      --swim: #e9f6fb;
+      --piano: #f4edfc;
+      --hcps: #fff1ea;
+      --pending: #8f2f2f;
+      --pending-bg: #f8dddd;
+      --html: #8a5b00;
+      --html-bg: #fff0cb;
+      --important: #9b341f;
+      --important-bg: #ffe1d5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #f6efe6;
+    }
+    main { max-width: 1480px; margin: 0 auto; padding: 32px 20px 56px; }
+    .hero, .table-wrap {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 16px 42px rgba(31, 43, 55, 0.08);
+    }
+    .hero { padding: 24px; margin-bottom: 20px; }
+    h1 { margin: 0 0 8px; font-size: 38px; line-height: 1.08; }
+    p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .sync-meta { display: flex; flex-wrap: wrap; gap: 12px; margin: 18px 0 0; }
+    .sync-meta div { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: #fffaf2; min-width: 190px; }
+    .sync-meta dt { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .sync-meta dd { margin: 4px 0 0; font-size: 13px; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 1180px; border-collapse: collapse; }
+    th, td { padding: 14px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); font-size: 14px; line-height: 1.45; }
+    th { background: #f3ede4; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; }
+    tr.source-school { background: var(--school); }
+    tr.source-swim { background: var(--swim); }
+    tr.source-piano { background: var(--piano); }
+    tr.source-hcps { background: var(--hcps); }
+    .pill { display: inline-flex; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .pill-pending { background: var(--pending-bg); color: var(--pending); }
+    .pill-html { background: var(--html-bg); color: var(--html); }
+    .pill-important { background: var(--important-bg); color: var(--important); }
+    .pill-standard { background: #dff2eb; color: #0f6a58; }
+    a { color: #0f6a58; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>School Events Public Summary</h1>
+      <p>Single-table preview sorted by event date. Row color indicates school, NOVA swim, Selah Studio piano, or HCPS calendar source.</p>
+      <dl class="sync-meta">
+        <div><dt>Last Sync Attempt</dt><dd>2026-05-06T19:24:48-04:00</dd></div>
+        <div><dt>Last Successful Sync</dt><dd>2026-05-06T19:24:48-04:00</dd></div>
+        <div><dt>Lookback Window</dt><dd>7 days</dd></div>
+      </dl>
+    </section>
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Audience</th>
+            <th>Type</th>
+            <th>School / Program</th>
+            <th>Event / Deadline</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Calendar</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>AP Exams</td>
+            <td>May 4-15, 2026</td>
+            <td><span class="pill pill-standard">Confirmed school window</span></td>
+            <td>Calendar covered</td>
+            <td>AP exam window from Godwin May updates.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school students</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Support to Succeed remediation assignments due</td>
+            <td>Mon, May 4, 2026</td>
+            <td><span class="pill pill-html">Academic deadline</span></td>
+            <td>HTML only</td>
+            <td>Generic school reminder; no student-specific remediation confirmation found.</td>
+          </tr>
+          <tr class="source-school">
+            <td>Godwin High School families</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Teacher Appreciation staff luncheon</td>
+            <td>Tue, May 5, 2026</td>
+            <td><span class="pill pill-html">Donation opportunity</span></td>
+            <td>HTML only</td>
+            <td>PTSO requested food, drink, and gift-card support for the staff luncheon.</td>
+          </tr>
+          <tr class="source-swim">
+            <td>High school swimmer</td>
+            <td>NOVA Swim</td>
+            <td>NOVA Senior Bronze</td>
+            <td>Senior Bronze Tuesday/Wednesday practice</td>
+            <td>Tuesdays and Wednesdays<br>6:00 PM - 7:45 PM</td>
+            <td><span class="pill pill-html">Recurring practice</span></td>
+            <td>HTML only</td>
+            <td>Recurring schedule through the end of the school year; kept off automation until recurrence boundary/location rules are finalized.</td>
+          </tr>
+          <tr class="source-school">
+            <td>HCPS gifted families</td>
+            <td>School</td>
+            <td>Henrico County Public Schools</td>
+            <td>Gifted Spark Spring Musical Showcase RSVP opportunity</td>
+            <td>Wed, May 6, 2026<br>Building opens 6:30 PM; auditorium opens 6:45 PM; show 7:00 PM</td>
+            <td><span class="pill pill-html">Optional RSVP opportunity</span></td>
+            <td>HTML only</td>
+            <td>Free HCPS gifted-family event at Henrico High School Theater; no RSVP or attendance confirmation found.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>SOL Testing - Reading</td>
+            <td>Thu, May 7, 2026<br>9:15 AM - 12:30 PM</td>
+            <td><span class="pill pill-standard">Confirmed testing block</span></td>
+            <td>Calendar covered</td>
+            <td>Testing/study hall block follows common study at 9:00 AM.</td>
+          </tr>
+          <tr class="source-swim">
+            <td>High school swimmer</td>
+            <td>NOVA Swim</td>
+            <td>NOVA of Virginia Aquatics</td>
+            <td>NOVA Team Award Celebration</td>
+            <td>Thu, May 7, 2026<br>5:00 PM - 7:00 PM</td>
+            <td><span class="pill pill-standard">NOVA confirmed</span></td>
+            <td>Calendar covered</td>
+            <td>Upstairs at Regency in the old JC Penney space.</td>
+          </tr>
+          <tr class="source-swim">
+            <td>High school swimmer</td>
+            <td>NOVA Swim</td>
+            <td>NOVA of Virginia Aquatics</td>
+            <td>Swim-A-Thon pledges and prize forms due</td>
+            <td>Fri, May 8, 2026</td>
+            <td><span class="pill pill-standard">Team deadline</span></td>
+            <td>Calendar covered</td>
+            <td>Fundraising/prize-form deadline from team communication.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>SOL Testing - Math</td>
+            <td>Fri, May 8, 2026<br>9:15 AM - 12:30 PM</td>
+            <td><span class="pill pill-standard">Confirmed testing block</span></td>
+            <td>Calendar covered</td>
+            <td>Testing/study hall block follows common study at 9:00 AM.</td>
+          </tr>
+          <tr class="source-piano">
+            <td>High school and middle school piano students</td>
+            <td>Selah Studio</td>
+            <td>Selah Studio</td>
+            <td>Spring Piano Recital</td>
+            <td>Sat, May 9, 2026<br>3:30 PM<br><span class="muted">Doors open 3:00 PM; arrive by 3:15 PM</span></td>
+            <td><span class="pill pill-standard">Participation confirmed</span></td>
+            <td>Calendar covered</td>
+            <td>Three Chopt Presbyterian Church, 9315 Three Chopt Road.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>SOL Testing - Science</td>
+            <td>Mon, May 11, 2026<br>9:15 AM - 12:30 PM</td>
+            <td><span class="pill pill-standard">Confirmed testing block</span></td>
+            <td>Calendar covered</td>
+            <td>Testing/study hall block follows common study at 9:00 AM.</td>
+          </tr>
+          <tr class="source-swim">
+            <td>High school swimmer</td>
+            <td>NOVA Swim</td>
+            <td>NOVA of Virginia Aquatics</td>
+            <td>NOVA Long Course Spring Splash</td>
+            <td>May 15-17, 2026<br>Fri 3:00 PM - Sun 8:00 PM</td>
+            <td><span class="pill pill-standard">Meet window</span></td>
+            <td>Calendar covered</td>
+            <td>Long-course meet window from NOVA event communication.</td>
+          </tr>
+          <tr class="source-school">
+            <td>Godwin High School families</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Underclassmen Awards Ceremony</td>
+            <td>Mon, May 18, 2026<br>7:00 PM</td>
+            <td><span class="pill pill-standard">Conditional invitation pending</span></td>
+            <td>Calendar covered</td>
+            <td>Families of recognized students are expected to receive a separate invitation.</td>
+          </tr>
+          <tr class="source-school">
+            <td>Godwin High School families</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Senior Honors dessert donations drop-off</td>
+            <td>Thu, May 21, 2026<br>3:00 PM - 5:00 PM</td>
+            <td><span class="pill pill-html">Donation opportunity</span></td>
+            <td>HTML only</td>
+            <td>Freshman families were asked to consider dessert donations for the senior honors reception.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school students</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>2026-2027 schedule change requests due</td>
+            <td>Fri, May 22, 2026</td>
+            <td><span class="pill pill-html">Optional request deadline</span></td>
+            <td>HTML only</td>
+            <td>Final day to submit schedule change requests; no student-specific request was found.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Final Exams - Periods 2 and 6</td>
+            <td>Fri, May 22, 2026<br>9:00 AM - 1:00 PM</td>
+            <td><span class="pill pill-standard">Confirmed exam day</span></td>
+            <td>Calendar covered</td>
+            <td>First exam 9:00-10:50 AM; second exam 11:10 AM-1:00 PM.</td>
+          </tr>
+          <tr class="source-hcps">
+            <td>High school and middle school students</td>
+            <td>HCPS Calendar</td>
+            <td>Henrico County Public Schools</td>
+            <td>Schools closed - Memorial Day</td>
+            <td>Mon, May 25, 2026</td>
+            <td><span class="pill pill-important">Important day off</span></td>
+            <td>Calendar covered</td>
+            <td>All-day closure from subscribed HCPS Google Calendar.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Final Exams - Periods 1 and 5</td>
+            <td>Tue, May 26, 2026<br>9:00 AM - 1:00 PM</td>
+            <td><span class="pill pill-standard">Confirmed exam day</span></td>
+            <td>Calendar covered</td>
+            <td>First exam 9:00-10:50 AM; second exam 11:10 AM-1:00 PM.</td>
+          </tr>
+          <tr class="source-hcps">
+            <td>Godwin High School families</td>
+            <td>HCPS Calendar</td>
+            <td>Henrico County Public Schools</td>
+            <td>Mills E. Godwin High School Graduation Ceremony</td>
+            <td>Wed, May 27, 2026<br>3:00 PM - 5:00 PM</td>
+            <td><span class="pill pill-standard">Relevant ceremony</span></td>
+            <td>Calendar covered</td>
+            <td>Henrico Sports &amp; Events Center.</td>
+          </tr>
+          <tr class="source-piano">
+            <td>High school and middle school piano students</td>
+            <td>Selah Studio</td>
+            <td>Selah Studio</td>
+            <td>Studio closure</td>
+            <td>May 28-30, 2026</td>
+            <td><span class="pill pill-important">Important closure</span></td>
+            <td>Calendar covered</td>
+            <td>No Selah Studio lessons during this closure window.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Final Exams - Periods 3 and 7</td>
+            <td>Thu, May 28, 2026<br>9:00 AM - 1:00 PM</td>
+            <td><span class="pill pill-standard">Confirmed exam day</span></td>
+            <td>Calendar covered</td>
+            <td>First exam 9:00-10:50 AM; second exam 11:10 AM-1:00 PM.</td>
+          </tr>
+          <tr class="source-hcps">
+            <td>High school and middle school students</td>
+            <td>HCPS Calendar</td>
+            <td>Henrico County Public Schools</td>
+            <td>Last day of school</td>
+            <td>Fri, May 29, 2026</td>
+            <td><span class="pill pill-important">Important half day</span></td>
+            <td>Calendar covered</td>
+            <td>Student half day / staff clerical day.</td>
+          </tr>
+          <tr class="source-school">
+            <td>Middle school strings</td>
+            <td>School</td>
+            <td>JMU Spring String Thing</td>
+            <td>Spring String Thing Camp</td>
+            <td>May 29-31, 2026<br><span class="muted">Check-in/auditions Fri 11:00 AM-1:45 PM; final concerts Sun 12:30 PM and 2:30 PM, student concert time pending</span></td>
+            <td><span class="pill pill-standard">Accepted and paid</span></td>
+            <td>Calendar covered</td>
+            <td>JMU camp on campus in Harrisonburg; acceptance, completed registration, and $420 payment confirmed. Concert assignment will be sent by Saturday morning.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school student</td>
+            <td>School</td>
+            <td>Godwin High School</td>
+            <td>Final Exam - Period 4</td>
+            <td>Fri, May 29, 2026<br>9:00 AM - 10:50 AM</td>
+            <td><span class="pill pill-standard">Confirmed exam day</span></td>
+            <td>Calendar covered</td>
+            <td>Also the last day of school.</td>
+          </tr>
+          <tr class="source-school">
+            <td>Middle school strings</td>
+            <td>School</td>
+            <td>JMU Spring String Thing</td>
+            <td>Spring String Thing check-in and auditions</td>
+            <td>Fri, May 29, 2026<br>11:00 AM - 1:45 PM</td>
+            <td><span class="pill pill-standard">Confirmed camp schedule</span></td>
+            <td>Calendar covered</td>
+            <td>Check-in/audition window for confirmed JMU String Camp registration.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school students</td>
+            <td>School</td>
+            <td>Virtual Virginia</td>
+            <td>Virtual Virginia summer course registration</td>
+            <td>Cohort 1 register by Wed, June 3, 2026<br>Cohort 2 register by Wed, June 17, 2026</td>
+            <td><span class="pill pill-html">Summer opportunity</span></td>
+            <td>HTML only</td>
+            <td>Optional initial-credit or credit-recovery courses; no registration confirmation found.</td>
+          </tr>
+          <tr class="source-school">
+            <td>High school students</td>
+            <td>School</td>
+            <td>Longwood University EPF</td>
+            <td>Online Economics &amp; Personal Finance registration</td>
+            <td>Register by Sat, June 6, 2026<br>Course June 22-July 25, 2026</td>
+            <td><span class="pill pill-html">Summer opportunity</span></td>
+            <td>HTML only</td>
+            <td>Optional EPF course opportunity; no registration confirmation found.</td>
+          </tr>
+          <tr class="source-hcps">
+            <td>High school and middle school students</td>
+            <td>HCPS Calendar</td>
+            <td>Henrico County Public Schools</td>
+            <td>Schools closed - Juneteenth</td>
+            <td>Thu, June 18, 2026</td>
+            <td><span class="pill pill-important">Important day off</span></td>
+            <td>Calendar covered</td>
+            <td>All-day closure from subscribed HCPS Google Calendar.</td>
+          </tr>
+          <tr class="source-piano">
+            <td>High school and middle school piano students</td>
+            <td>Selah Studio</td>
+            <td>Selah Studio</td>
+            <td>Studio closure</td>
+            <td>June 24-27, 2026</td>
+            <td><span class="pill pill-important">Important closure</span></td>
+            <td>Calendar covered</td>
+            <td>No Selah Studio lessons during this closure window.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

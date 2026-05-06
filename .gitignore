@@ -1,0 +1,13 @@
+.gh-pages-deploy/
+.verification/
+.smoke-output/
+__pycache__/
+.snapshots/
+.google-calendar-client.json
+.google-calendar-token.json
+school_sync_config.json
+school-email-sync.automation.toml
+powerschool_gmail_table.html
+school_events_catalog.json
+school_sync_runs.log
+test_fixtures/
