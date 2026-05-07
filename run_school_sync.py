@@ -12,9 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import requests
-
-from google_calendar_sync import load_config, sync_payload
+from google_calendar_sync import HttpRequestError, load_config, sync_payload
 from render_school_report import render_html, sort_items, validate_public_privacy
 
 
@@ -165,7 +163,7 @@ def main() -> int:
             update_item_statuses(items, sync_summary)
             calendar_added = sync_summary["created"]
             note_bits.append(f"calendar created={sync_summary['created']} skipped={sync_summary['skipped']}")
-        except requests.exceptions.RequestException as exc:
+        except HttpRequestError as exc:
             run_status = "partial"
             note_bits.append(f"calendar sync failed: {exc.__class__.__name__}")
     else:

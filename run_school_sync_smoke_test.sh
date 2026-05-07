@@ -8,12 +8,20 @@ DEPLOY="${DEPLOY_PUBLIC:-0}"
 cd "${SCRIPT_DIR}"
 mkdir -p "${OUT_DIR}"
 
-python3 -m json.tool school_sync_config.json >/dev/null
-python3 -m json.tool test_fixtures/single_table_items.json >/dev/null
+PYTHON_BIN="${SCRIPT_DIR}/.venv/bin/python"
+if [[ ! -x "${PYTHON_BIN}" ]]; then
+  PYTHON_BIN="python3"
+fi
 
-python3 -m py_compile render_school_report.py
+export PYTHONPYCACHEPREFIX="${PYTHONPYCACHEPREFIX:-${SCRIPT_DIR}/.pycache-prefix}"
+mkdir -p "${PYTHONPYCACHEPREFIX}"
 
-./render_school_report.py \
+"${PYTHON_BIN}" -m json.tool school_sync_config.json >/dev/null
+"${PYTHON_BIN}" -m json.tool test_fixtures/single_table_items.json >/dev/null
+
+"${PYTHON_BIN}" -m py_compile render_school_report.py
+
+"${PYTHON_BIN}" ./render_school_report.py \
   --input test_fixtures/single_table_items.json \
   --private-output "${OUT_DIR}/private_single_table.html" \
   --public-output "${OUT_DIR}/public_single_table.html" \

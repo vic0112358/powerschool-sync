@@ -1,4 +1,10 @@
 .gh-pages-deploy/
+.venv/
+.pycache-prefix/
+.cron-lock/
+cron_shell_sync.log
+.public-publish-lock/
+public_publish.log
 .verification/
 .smoke-output/
 __pycache__/

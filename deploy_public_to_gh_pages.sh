@@ -7,6 +7,11 @@ CONFIG_PATH="${PROJECT_DIR}/school_sync_config.json"
 RUN_LOG_PATH="${PROJECT_DIR}/school_sync_runs.log"
 CHECK_ONLY=0
 DEPLOY_LOGGED=0
+PYTHON_BIN="${PROJECT_DIR}/.venv/bin/python"
+
+if [[ ! -x "${PYTHON_BIN}" ]]; then
+  PYTHON_BIN="python3"
+fi
 
 if [[ "${1:-}" == "--check" ]]; then
   CHECK_ONLY=1
@@ -21,7 +26,7 @@ log_deploy_result() {
   fi
   local lookback_days="unknown"
   if [[ -f "${CONFIG_PATH}" ]]; then
-    lookback_days="$(python3 -c 'import json; print(json.load(open("school_sync_config.json")).get("gmail_days_back", "unknown"))' 2>/dev/null || printf 'unknown')"
+    lookback_days="$("${PYTHON_BIN}" -c 'import json; print(json.load(open("school_sync_config.json")).get("gmail_days_back", "unknown"))' 2>/dev/null || printf 'unknown')"
   fi
   printf '%s | status=%s | trigger=manual-gh-pages-deploy | lookback_days=%s | private_page_changed=no | calendar_added=0 | public_deploy=%s | note=%s\n' \
     "$(date '+%Y-%m-%dT%H:%M:%S%z')" \
@@ -47,15 +52,18 @@ fi
 
 cd "${PROJECT_DIR}"
 
+export PYTHONPYCACHEPREFIX="${PYTHONPYCACHEPREFIX:-${PROJECT_DIR}/.pycache-prefix}"
+mkdir -p "${PYTHONPYCACHEPREFIX}"
+
 if [[ ! -f "${CONFIG_PATH}" ]]; then
   echo "Missing config file: ${CONFIG_PATH}" >&2
   exit 1
 fi
 
-PROVIDER="$(python3 -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"]["provider"])')"
-BRANCH="$(python3 -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"].get("branch", "gh-pages"))')"
-SOURCE_DIR="$(python3 -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"]["source_dir"])')"
-SITE_URL="$(python3 -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"].get("site_url", ""))')"
+PROVIDER="$("${PYTHON_BIN}" -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"]["provider"])')"
+BRANCH="$("${PYTHON_BIN}" -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"].get("branch", "gh-pages"))')"
+SOURCE_DIR="$("${PYTHON_BIN}" -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"]["source_dir"])')"
+SITE_URL="$("${PYTHON_BIN}" -c 'import json; print(json.load(open("school_sync_config.json"))["public_deploy"].get("site_url", ""))')"
 
 if [[ "${PROVIDER}" != "github_pages" ]]; then
   echo "Configured public_deploy.provider is ${PROVIDER}, not github_pages." >&2
@@ -77,7 +85,7 @@ if [[ ! -f "${SOURCE_DIR}/index.html" ]]; then
   exit 1
 fi
 
-python3 - <<'PY'
+"${PYTHON_BIN}" - <<'PY'
 from pathlib import Path
 from render_school_report import validate_public_privacy
 validate_public_privacy(Path("public_site/index.html"))

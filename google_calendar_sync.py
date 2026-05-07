@@ -10,6 +10,7 @@ import socket
 import sys
 import time
 import urllib.parse
+import urllib.request
 import webbrowser
 from dataclasses import dataclass
 from datetime import datetime
@@ -17,13 +18,54 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from typing import Any
 
-import requests
-
 
 GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_CALENDAR_API = "https://www.googleapis.com/calendar/v3"
 TIMEOUT = 30
+
+
+class HttpRequestError(Exception):
+    """Raised when an HTTP request returns a non-2xx response."""
+
+
+def http_json(
+    url: str,
+    *,
+    method: str = "GET",
+    headers: dict[str, str] | None = None,
+    params: dict[str, Any] | None = None,
+    data: dict[str, Any] | None = None,
+    json_body: dict[str, Any] | None = None,
+    timeout: int = TIMEOUT,
+) -> dict[str, Any]:
+    if params:
+        query = urllib.parse.urlencode({k: v for k, v in params.items() if v is not None})
+        separator = "&" if "?" in url else "?"
+        url = f"{url}{separator}{query}"
+
+    request_headers = dict(headers or {})
+    body: bytes | None = None
+    if json_body is not None:
+        request_headers["Content-Type"] = "application/json"
+        body = json.dumps(json_body).encode("utf-8")
+    elif data is not None:
+        request_headers["Content-Type"] = "application/x-www-form-urlencoded"
+        body = urllib.parse.urlencode(data).encode("utf-8")
+
+    request = urllib.request.Request(url, data=body, headers=request_headers, method=method)
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            payload = response.read()
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise HttpRequestError(f"HTTP {exc.code} for {url}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise HttpRequestError(f"Network error for {url}: {exc.reason}") from exc
+
+    if not payload:
+        return {}
+    return json.loads(payload.decode("utf-8"))
 
 
 def load_config(config_path: Path) -> dict[str, Any]:
@@ -125,8 +167,9 @@ class GoogleCalendarAuth:
         while "code" not in code_holder:
             server.handle_request()
 
-        token_resp = requests.post(
+        token = http_json(
             GOOGLE_TOKEN_URL,
+            method="POST",
             data={
                 "code": code_holder["code"],
                 "client_id": client["client_id"],
@@ -134,10 +177,7 @@ class GoogleCalendarAuth:
                 "redirect_uri": self.redirect_uri,
                 "grant_type": "authorization_code",
             },
-            timeout=TIMEOUT,
         )
-        token_resp.raise_for_status()
-        token = token_resp.json()
         token["expires_at"] = int(time.time()) + int(token.get("expires_in", 0))
         self.write_token(token)
         print(f"Saved token to {self.token_path}")
@@ -148,18 +188,16 @@ class GoogleCalendarAuth:
             return token["access_token"]
 
         client = self.read_client()
-        refresh_resp = requests.post(
+        refreshed = http_json(
             GOOGLE_TOKEN_URL,
+            method="POST",
             data={
                 "client_id": client["client_id"],
                 "client_secret": client["client_secret"],
                 "refresh_token": token["refresh_token"],
                 "grant_type": "refresh_token",
             },
-            timeout=TIMEOUT,
         )
-        refresh_resp.raise_for_status()
-        refreshed = refresh_resp.json()
         token["access_token"] = refreshed["access_token"]
         token["expires_at"] = int(time.time()) + int(refreshed.get("expires_in", 0))
         self.write_token(token)
@@ -174,7 +212,7 @@ class GoogleCalendarClient:
         return {"Authorization": f"Bearer {self.auth.access_token()}"}
 
     def search_events(self, calendar_id: str, query: str, time_min: str, time_max: str) -> list[dict[str, Any]]:
-        resp = requests.get(
+        payload = http_json(
             f"{GOOGLE_CALENDAR_API}/calendars/{urllib.parse.quote(calendar_id, safe='')}/events",
             headers=self._headers(),
             params={
@@ -185,20 +223,16 @@ class GoogleCalendarClient:
                 "maxResults": 25,
                 "orderBy": "startTime",
             },
-            timeout=TIMEOUT,
         )
-        resp.raise_for_status()
-        return resp.json().get("items", [])
+        return payload.get("items", [])
 
     def create_event(self, calendar_id: str, body: dict[str, Any]) -> dict[str, Any]:
-        resp = requests.post(
+        return http_json(
             f"{GOOGLE_CALENDAR_API}/calendars/{urllib.parse.quote(calendar_id, safe='')}/events",
             headers={**self._headers(), "Content-Type": "application/json"},
-            data=json.dumps(body),
-            timeout=TIMEOUT,
+            method="POST",
+            json_body=body,
         )
-        resp.raise_for_status()
-        return resp.json()
 
 
 def normalize_title(value: str) -> str:
